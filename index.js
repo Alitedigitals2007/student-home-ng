@@ -1,3 +1,4 @@
+require('dotenv').config(); // MUST be the first line
 const express = require('express');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
