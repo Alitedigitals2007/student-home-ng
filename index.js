@@ -1,5 +1,4 @@
 const express = require('express');
-const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
 const multer = require('multer');
@@ -10,8 +9,14 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // 1. Neon Database Connection
+const { Pool } = require('pg');
+require('dotenv').config();
+
 const pool = new Pool({
-    connectionString: 'postgresql://neondb_owner:npg_aDZQBHJX9Cq7@ep-odd-hat-aiantqny-pooler.c-4.us-east-1.aws.neon.tech/neondb?sslmode=require',
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false // Required for Neon/Render connection
+  }
 });
 
 // 2. Multer Configuration
