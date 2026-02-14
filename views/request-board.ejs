@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request Board | StudentHome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+</head>
+<body class="bg-[#fafafa]">
+
+    <nav class="p-6 flex justify-between items-center max-w-6xl mx-auto">
+        <a href="/" class="font-black uppercase tracking-tighter text-xl text-black">Student<span class="text-gray-300">Home</span></a>
+        <div class="flex gap-6">
+            <a href="/listings" class="text-[10px] font-black uppercase tracking-widest text-gray-400">Houses</a>
+            <a href="/roommates" class="text-[10px] font-black uppercase tracking-widest text-gray-400">Roommates</a>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-6 py-12">
+        <header class="mb-16 text-center">
+            <h1 class="text-5xl md:text-7xl font-black tracking-tighter uppercase mb-4">Request <span class="text-gray-300">Board</span></h1>
+            <p class="text-gray-400 font-bold uppercase text-[10px] tracking-[0.4em]">Landlords & Students: See who is looking for a home</p>
+        </header>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <% if (requests.length > 0) { %>
+                <% requests.forEach(req => { %>
+                    <div class="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm hover:shadow-xl transition-all group">
+                        <div class="flex justify-between items-start mb-6">
+                            <div class="bg-black text-white px-4 py-1 rounded-full text-[8px] font-black uppercase tracking-widest">
+                                Looking to Rent
+                            </div>
+                            <span class="text-[10px] text-gray-300 font-bold tracking-widest uppercase">
+                                <%= new Date(req.created_at).toLocaleDateString() %>
+                            </span>
+                        </div>
+
+                        <h3 class="text-3xl font-black tracking-tighter mb-1">₦<%= Number(req.budget).toLocaleString() %></h3>
+                        <p class="text-gray-400 font-bold uppercase text-[10px] tracking-widest mb-6">Budget for <%= req.preferred_location %></p>
+
+                        <div class="space-y-4 mb-8">
+                            <p class="text-gray-600 text-sm leading-relaxed font-medium italic">
+                                "<%= req.description %>"
+                            </p>
+                        </div>
+
+                        <div class="pt-6 border-t border-gray-50 flex items-center justify-between">
+                            <div>
+                                <p class="text-[9px] font-black text-gray-300 uppercase">Posted By</p>
+                                <p class="font-bold text-sm"><%= req.full_name %></p>
+                            </div>
+                            
+                            <a href="https://wa.me/<%= req.phone_number %>?text=Hello <%= req.full_name %>, I saw your request on StudentHome. I might have a room for you." 
+                               class="bg-gray-50 group-hover:bg-black group-hover:text-white p-4 rounded-2xl transition-colors">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="col-span-full py-20 text-center bg-white rounded-[3rem] border border-dashed border-gray-200">
+                    <p class="text-gray-400 font-bold uppercase text-[10px] tracking-[0.2em]">No active housing requests at the moment.</p>
+                </div>
+            <% } %>
+        </div>
+
+        <div class="fixed bottom-10 right-10">
+            <a href="/dashboard" class="bg-black text-white px-8 py-5 rounded-full font-black uppercase text-[10px] tracking-widest shadow-2xl flex items-center gap-3 hover:scale-105 transition">
+                <span>Post my Request</span>
+            </a>
+        </div>
+    </main>
+
+</body>
+</html>

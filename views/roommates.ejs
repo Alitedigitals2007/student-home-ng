@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Roommates | StudentHome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+</head>
+<body class="bg-[#fafafa] text-black antialiased">
+
+    <nav class="flex justify-between items-center px-6 md:px-10 py-6 bg-white border-b border-gray-100 sticky top-0 z-50">
+        <a href="/" class="text-xl font-black tracking-tighter uppercase">Student<span class="text-gray-300">Home</span></a>
+        <a href="/dashboard" class="text-[10px] font-black uppercase tracking-widest border border-black px-5 py-2 rounded-full hover:bg-black hover:text-white transition">My Control Center</a>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-16">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+            <div>
+                <h1 class="text-6xl md:text-8xl font-black tracking-tighter uppercase leading-[0.8]">
+                    Partner<br><span class="text-gray-300">Search</span>
+                </h1>
+                <p class="mt-6 text-gray-400 font-bold uppercase text-[10px] tracking-[0.3em]">Verified students looking for a shared home</p>
+            </div>
+            <a href="/post-roommate" class="bg-black text-white px-10 py-5 rounded-[2rem] font-black uppercase text-[10px] tracking-widest hover:scale-105 transition-transform shadow-2xl">
+                + Post Your Ad
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            <% if (ads && ads.length > 0) { %>
+                <% ads.forEach(ad => { %>
+                    <div class="group bg-white rounded-[3.5rem] border border-gray-100 overflow-hidden hover:shadow-2xl transition-all duration-500">
+                        <div class="h-64 bg-gray-100 relative">
+                            <% if (ad.images && ad.images[0]) { %>
+                                <img src="<%= ad.images[0] %>" class="w-full h-full object-cover group-hover:scale-110 transition duration-700">
+                            <% } else { %>
+                                <div class="w-full h-full flex items-center justify-center bg-gray-50 text-[10px] font-black text-gray-300 uppercase tracking-widest italic">No Photo Provided</div>
+                            <% } %>
+                            
+                            <div class="absolute bottom-6 left-6">
+                                <div class="bg-white/90 backdrop-blur-md p-4 rounded-3xl shadow-sm">
+                                    <p class="text-[8px] font-black uppercase text-gray-400 leading-none mb-1">Share Price</p>
+                                    <p class="text-xl font-black leading-none">₦<%= Number(ad.roommate_share).toLocaleString() %></p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-10">
+                            <div class="flex justify-between items-start mb-6">
+                                <div>
+                                    <h3 class="text-2xl font-black tracking-tighter leading-none"><%= ad.full_name %></h3>
+                                    <p class="text-[10px] font-bold text-gray-400 uppercase mt-2 tracking-widest"><%= ad.area %></p>
+                                </div>
+                                <span class="w-10 h-10 bg-black text-white rounded-full flex items-center justify-center text-xs font-black">
+                                    <%= ad.full_name.charAt(0) %>
+                                </span>
+                            </div>
+
+                            <div class="flex flex-wrap gap-2 mb-8">
+                                <span class="bg-gray-50 px-3 py-1 rounded-lg text-[9px] font-black uppercase"><%= ad.my_personality %></span>
+                                <span class="bg-gray-50 px-3 py-1 rounded-lg text-[9px] font-black uppercase"><%= ad.my_neatness %></span>
+                                <span class="bg-blue-50 text-blue-600 px-3 py-1 rounded-lg text-[9px] font-black uppercase"><%= ad.apt_type %></span>
+                            </div>
+
+                            <p class="text-gray-500 text-sm leading-relaxed mb-10 line-clamp-2 font-medium">
+                                "<%= ad.description %>"
+                            </p>
+
+                            <a href="/roommate/<%= ad.id %>" class="block w-full bg-black text-white text-center py-6 rounded-[2rem] font-black uppercase text-[10px] tracking-[0.2em] group-hover:bg-blue-600 transition-colors shadow-lg">
+                                View Full Details
+                            </a>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <div class="col-span-full py-40 text-center bg-white rounded-[4rem] border border-dashed border-gray-200">
+                    <p class="text-gray-400 font-bold uppercase text-xs tracking-widest">No roommate ads found in this area.</p>
+                </div>
+            <% } %>
+        </div>
+    </main>
+
+</body>
+</html>

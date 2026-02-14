@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= room.title %> | StudentHome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body class="bg-white text-black antialiased">
+
+    <nav class="p-6 md:px-10 flex justify-between items-center border-b border-gray-50 bg-white sticky top-0 z-50">
+        <a href="/listings" class="text-[10px] font-black uppercase tracking-widest flex items-center gap-2 group">
+            <span class="group-hover:-translate-x-1 transition-transform">←</span> Back to Explore
+        </a>
+        <div class="text-xl font-black tracking-tighter uppercase">Student<span class="text-gray-300">Home</span></div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 md:px-10 py-10 md:py-16">
+        <div class="flex flex-col lg:flex-row gap-12 lg:gap-20">
+            
+            <div class="flex-1 space-y-4">
+                <div class="rounded-[3rem] overflow-hidden bg-gray-100 aspect-square shadow-2xl relative">
+                    <img id="mainImage" src="<%= room.image_url %>" 
+                         class="w-full h-full object-cover transition-all duration-500" 
+                         alt="<%= room.title %>">
+                </div>
+                
+                <% if (room.image_gallery && room.image_gallery.length > 0) { %>
+                    <div class="flex gap-4 overflow-x-auto pb-4 no-scrollbar">
+                        <% room.image_gallery.forEach((img) => { %>
+                            <img src="<%= img %>" 
+                                 onclick="document.getElementById('mainImage').src = this.src"
+                                 class="w-24 h-24 rounded-2xl object-cover cursor-pointer hover:ring-2 ring-black transition-all flex-shrink-0 border border-gray-100 shadow-sm">
+                        <% }) %>
+                    </div>
+                <% } %>
+            </div>
+
+            <div class="flex-1 space-y-10">
+                <div>
+                    <div class="flex gap-2 mb-6">
+                        <span class="inline-block bg-green-50 text-green-600 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest">
+                            <%= room.status %>
+                        </span>
+                        <% if(room.gender_preference && room.gender_preference !== 'No preference') { %>
+                            <span class="inline-block bg-purple-50 text-purple-600 px-4 py-2 rounded-full text-[10px] font-black uppercase tracking-widest">
+                                <%= room.gender_preference %>
+                            </span>
+                        <% } %>
+                    </div>
+                    <h1 class="text-4xl md:text-6xl font-black tracking-tighter leading-tight"><%= room.title %></h1>
+                    <p class="text-gray-400 font-bold text-lg mt-4 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path></svg>
+                        <%= room.street %>, <%= room.area %>
+                    </p>
+                    <% if(room.landmark) { %>
+                        <p class="text-xs font-bold text-gray-400 mt-1 uppercase tracking-widest">📍 Landmark: <%= room.landmark %></p>
+                    <% } %>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6 border-y border-gray-100 py-10">
+                    <div>
+                        <p class="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1">Rent</p>
+                        <p class="font-black text-2xl">₦<%= Number(room.price).toLocaleString() %></p>
+                        <p class="text-[10px] font-bold text-gray-400 uppercase"><%= room.payment_type %></p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1">Distance</p>
+                        <p class="font-bold text-lg uppercase"><%= room.distance_to_campus || 'Not specified' %></p>
+                    </div>
+                    <div>
+                        <p class="text-[10px] font-black text-gray-300 uppercase tracking-widest mb-1">Available From</p>
+                        <p class="font-bold text-lg uppercase">
+                            <%= room.available_from ? new Date(room.available_from).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : 'Now' %>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="space-y-4">
+                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">The Space</h3>
+                    <p class="text-gray-600 leading-relaxed text-lg">
+                        <%= room.description || "No description provided." %>
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="space-y-4">
+                        <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Amenities</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <% if (room.amenities && room.amenities.length > 0) { %>
+                                <% room.amenities.forEach(item => { %>
+                                    <span class="bg-gray-50 border border-gray-100 px-3 py-2 rounded-xl text-[10px] font-bold uppercase tracking-tight">
+                                        ✓ <%= item %>
+                                    </span>
+                                <% }) %>
+                            <% } else { %>
+                                <p class="text-xs text-gray-400">No amenities listed.</p>
+                            <% } %>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-4">
+                        <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">House Rules</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <% if (room.lifestyle_rules && room.lifestyle_rules.length > 0) { %>
+                                <% room.lifestyle_rules.forEach(rule => { %>
+                                    <span class="bg-red-50 text-red-600 border border-red-100 px-3 py-2 rounded-xl text-[10px] font-bold uppercase tracking-tight">
+                                        • <%= rule %>
+                                    </span>
+                                <% }) %>
+                            <% } else { %>
+                                <p class="text-xs text-gray-400">Standard rules apply.</p>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+
+                <% if(room.room_type === 'Shared room') { %>
+                <div class="bg-gray-50 p-8 rounded-[2rem] border border-gray-100 space-y-4">
+                    <h3 class="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Preferred Roommate</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <p class="text-[9px] font-black text-gray-400 uppercase">Age Range</p>
+                            <p class="font-bold text-sm"><%= room.roommate_age_range || 'Any' %></p>
+                        </div>
+                        <div>
+                            <p class="text-[9px] font-black text-gray-400 uppercase">Personality</p>
+                            <p class="font-bold text-sm text-capitalize"><%= room.roommate_personality || 'Doesn\'t matter' %></p>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+
+                <div class="pt-6 space-y-4">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-black rounded-full flex items-center justify-center text-white font-black">
+                            <%= room.full_name.charAt(0) %>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Listed by</p>
+                            <p class="font-black text-lg"><%= room.full_name %></p>
+                        </div>
+                    </div>
+
+                    <a href="tel:<%= room.phone_number %>" 
+                       class="flex items-center justify-center gap-4 w-full bg-black text-white py-6 rounded-[2rem] font-black uppercase tracking-[0.2em] hover:bg-gray-800 transition-all shadow-xl">
+                        Call Agent
+                    </a>
+                    
+                    <a href="https://wa.me/<%= room.phone_number %>?text=Hi, I'm interested in the room at <%= room.street %>, <%= room.area %>." 
+                       target="_blank" 
+                       class="flex items-center justify-center gap-4 w-full bg-green-500 text-white py-6 rounded-[2rem] font-black uppercase tracking-[0.2em] hover:bg-green-600 transition-all shadow-lg">
+                        Chat on WhatsApp
+                    </a>
+                </div>
+
+                <div class="bg-amber-50 p-6 rounded-3xl border border-amber-100 mt-6">
+                    <p class="text-center text-[10px] font-bold text-amber-700 uppercase tracking-[0.1em]">
+                        ⚠️ Safety Tip: Never pay an inspection fee before seeing the property. 
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

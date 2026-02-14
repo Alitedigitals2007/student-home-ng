@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Room | StudentHome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-['Plus_Jakarta_Sans'] pb-20">
+
+    <form action="/post-room" method="POST" enctype="multipart/form-data" id="roomForm" class="max-w-4xl mx-auto mt-10 space-y-8 px-6">
+        
+        <header class="text-center space-y-2">
+            <h1 class="text-4xl font-black tracking-tighter uppercase">List Your <span class="text-gray-400">Space</span></h1>
+            <p class="text-gray-500 font-bold text-xs uppercase tracking-widest">Premium Student Housing Portal</p>
+        </header>
+
+        <section class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
+            <h2 class="text-xl font-black mb-6 flex items-center gap-2">1. Basic Information</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="md:col-span-2">
+                    <label class="text-[10px] font-black uppercase text-gray-400">Room Title</label>
+                    <input type="text" name="title" placeholder="e.g. Clean Self-Contain Near Main Gate" class="w-full bg-gray-50 p-4 rounded-2xl mt-1 outline-none border focus:border-black" required>
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400">Area</label>
+                    <input type="text" name="area" placeholder="Akoka" class="w-full bg-gray-50 p-4 rounded-2xl mt-1 outline-none" required>
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400">Street</label>
+                    <input type="text" name="street" placeholder="St Finbarrs" class="w-full bg-gray-50 p-4 rounded-2xl mt-1 outline-none" required>
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400">Landmark</label>
+                    <input type="text" name="landmark" placeholder="Near Gate" class="w-full bg-gray-50 p-4 rounded-2xl mt-1 outline-none">
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400">Distance to Campus</label>
+                    <input type="text" name="distance_to_campus" placeholder="5 mins walk" class="w-full bg-gray-50 p-4 rounded-2xl mt-1 outline-none">
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
+            <h2 class="text-xl font-black mb-6">2. Pricing & Availability</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400">Price (₦)</label>
+                    <input type="number" name="price" class="w-full bg-gray-50 p-4 rounded-2xl mt-1 outline-none" required>
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400">Payment Type</label>
+                    <select name="payment_type" class="w-full bg-gray-50 p-4 rounded-2xl mt-1 outline-none">
+                        <option>Per Year</option>
+                        <option>Per Semester</option>
+                        <option>Monthly</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400">Room Type</label>
+                    <select name="room_type" class="w-full bg-gray-50 p-4 rounded-2xl mt-1 outline-none">
+                        <option>Self contain</option>
+                        <option>Shared room</option>
+                        <option>Hostel</option>
+                        <option>1 bedroom flat</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400">Max People Allowed</label>
+                    <input type="number" name="num_people" value="1" class="w-full bg-gray-50 p-4 rounded-2xl mt-1 outline-none">
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400">Available From</label>
+                    <input type="date" name="available_from" class="w-full bg-gray-50 p-4 rounded-2xl mt-1 outline-none">
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400">Duration</label>
+                    <select name="duration_allowed" class="w-full bg-gray-50 p-4 rounded-2xl mt-1 outline-none">
+                        <option>1 Year</option>
+                        <option>1 Semester</option>
+                        <option>Flexible</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
+            <h2 class="text-xl font-black mb-6">3. Facilities & Amenities</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <% ['Constant water', 'Electricity', 'Prepaid meter', 'WiFi', 'Security', 'CCTV', 'Private bathroom', 'Wardrobe'].forEach(item => { %>
+                    <label class="flex items-center gap-3 p-4 bg-gray-50 rounded-2xl cursor-pointer">
+                        <input type="checkbox" name="amenities" value="<%= item %>" class="accent-black">
+                        <span class="text-[10px] font-bold uppercase"><%= item %></span>
+                    </label>
+                <% }) %>
+            </div>
+        </section>
+
+        <section class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
+            <h2 class="text-xl font-black mb-6">4. Preferences & Rules</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400">Gender Preference</label>
+                    <select name="gender_preference" class="w-full bg-gray-50 p-4 rounded-2xl mt-1 outline-none">
+                        <option>No preference</option>
+                        <option>Male only</option>
+                        <option>Female only</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400">Lifestyle Rules</label>
+                    <div class="flex flex-wrap gap-2 mt-2">
+                        <% ['No smoking', 'No loud music', 'Student only'].forEach(rule => { %>
+                            <label class="text-[10px] font-bold bg-gray-100 px-3 py-1 rounded-full">
+                                <input type="checkbox" name="lifestyle_rules" value="<%= rule %>"> <%= rule %>
+                            </label>
+                        <% }) %>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-8 border-t pt-6 space-y-4">
+                <p class="text-[10px] font-black uppercase text-gray-300">Roommate Preferences (Optional)</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <input type="text" name="roommate_age_range" placeholder="Age (e.g. 18-24)" class="bg-gray-50 p-4 rounded-2xl text-xs outline-none">
+                    <input type="text" name="roommate_cleanliness" placeholder="Cleanliness Level" class="bg-gray-50 p-4 rounded-2xl text-xs outline-none">
+                    <input type="text" name="roommate_personality" placeholder="Personality (Quiet/Social)" class="bg-gray-50 p-4 rounded-2xl text-xs outline-none">
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
+            <h2 class="text-xl font-black mb-6">5. Photos & Video</h2>
+            <div class="border-2 border-dashed border-gray-200 rounded-[2rem] p-10 text-center space-y-4 hover:border-black transition">
+                <input type="file" name="images" id="images" multiple accept="image/*" class="hidden">
+                <label for="images" class="cursor-pointer">
+                    <div class="text-4xl">📸</div>
+                    <p class="font-black text-xs uppercase tracking-widest mt-2">Upload Photos</p>
+                    <p class="text-[10px] text-gray-400 uppercase">At least 2 photos required</p>
+                </label>
+            </div>
+            <div id="preview" class="grid grid-cols-5 gap-2 mt-4"></div>
+        </section>
+
+        <section class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
+            <h2 class="text-xl font-black mb-6">6. Description</h2>
+            <textarea name="description" rows="5" placeholder="Describe what makes this room special..." class="w-full bg-gray-50 p-6 rounded-3xl outline-none border focus:border-black" required></textarea>
+        </section>
+
+        <button type="submit" class="w-full bg-black text-white py-8 rounded-[2.5rem] font-black uppercase tracking-widest shadow-2xl hover:bg-gray-900 transition active:scale-95">
+            Publish Premium Listing
+        </button>
+
+    </form>
+
+    <script>
+        // Photo Preview Logic
+        const imgInput = document.getElementById('images');
+        const preview = document.getElementById('preview');
+        imgInput.onchange = () => {
+            preview.innerHTML = '';
+            if (imgInput.files.length < 2) {
+                alert("Please select at least 2 photos.");
+            }
+            Array.from(imgInput.files).forEach(file => {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.className = "w-full aspect-square object-cover rounded-xl";
+                    preview.appendChild(img);
+                };
+                reader.readAsDataURL(file);
+            });
+        };
+
+        // Submit Check
+        document.getElementById('roomForm').onsubmit = (e) => {
+            if (imgInput.files.length < 2) {
+                e.preventDefault();
+                alert("Upload at least 2 photos to continue.");
+            }
+        };
+    </script>
+</body>
+</html>

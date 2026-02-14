@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Roommate Ad | StudentHome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>body { font-family: 'Plus Jakarta Sans', sans-serif; }</style>
+</head>
+<body class="bg-[#fafafa] text-black pb-20">
+
+    <nav class="p-6 md:px-10 flex justify-between items-center bg-white border-b border-gray-100 sticky top-0 z-50">
+        <a href="/dashboard" class="text-xs font-black uppercase tracking-widest flex items-center gap-2">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M15 19l-7-7 7-7"></path></svg>
+            Back to Dashboard
+        </a>
+    </nav>
+
+    <main class="max-w-4xl mx-auto px-6 mt-12">
+        <form action="/post-roommate" method="POST" enctype="multipart/form-data" class="space-y-10">
+            
+            <header class="mb-16">
+                <h1 class="text-5xl md:text-7xl font-black tracking-tighter uppercase leading-[0.8] mb-4">Find Your <br><span class="text-gray-300">Partner</span></h1>
+                <p class="text-gray-400 font-bold uppercase text-[10px] tracking-[0.3em]">Strictly Following Your 7-Section Framework</p>
+            </header>
+
+            <div class="bg-white p-10 rounded-[3rem] border border-gray-100 shadow-sm">
+                <h2 class="font-black uppercase text-xs mb-8 flex items-center gap-3">
+                    <span class="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center text-[10px]">01</span>
+                    House Information
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="text-[9px] font-black uppercase text-gray-400 ml-2">Apartment Type</label>
+                        <select name="apt_type" class="w-full p-4 bg-gray-50 rounded-2xl outline-none font-bold text-sm mt-1">
+                            <option>Self contain</option><option>1 bedroom</option><option>2 bedroom</option><option>3 bedroom</option><option>Hostel</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-[9px] font-black uppercase text-gray-400">Total Rooms</label>
+                            <input type="number" name="total_rooms" class="w-full p-4 bg-gray-50 rounded-2xl mt-1 outline-none">
+                        </div>
+                        <div>
+                            <label class="text-[9px] font-black uppercase text-gray-400">Total Occupants</label>
+                            <input type="number" name="total_occupants" class="w-full p-4 bg-gray-50 rounded-2xl mt-1 outline-none">
+                        </div>
+                    </div>
+                    <input type="text" name="area" id="js_area" placeholder="Area (e.g. Agbowo)" class="p-4 bg-gray-50 rounded-2xl outline-none font-bold text-sm">
+                    <input type="text" name="landmark" placeholder="Nearest Landmark" class="p-4 bg-gray-50 rounded-2xl outline-none font-bold text-sm">
+                    <input type="text" name="distance_to_campus" id="js_dist" placeholder="Distance to Campus (e.g. 5 mins walk)" class="p-4 bg-gray-50 rounded-2xl outline-none font-bold text-sm">
+                    <select name="is_furnished" class="p-4 bg-gray-50 rounded-2xl outline-none font-bold text-sm">
+                        <option disabled selected>Is it furnished?</option>
+                        <option>Yes</option><option>No</option><option>Partially</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="bg-white p-10 rounded-[3rem] border border-gray-100 shadow-sm">
+                <h2 class="font-black uppercase text-xs mb-8 flex items-center gap-3">
+                    <span class="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center text-[10px]">02</span>
+                    Facilities (Checkbox)
+                </h2>
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <% ['Constant water', 'Electricity', 'Prepaid meter', 'Generator', 'WiFi', 'Kitchen', 'Private bathroom', 'Balcony', 'Security', 'Parking'].forEach(f => { %>
+                        <label class="flex items-center gap-3 p-4 bg-gray-50 rounded-2xl cursor-pointer hover:bg-black hover:text-white transition group">
+                            <input type="checkbox" name="facilities" value="<%= f %>" class="accent-black">
+                            <span class="text-[10px] font-bold uppercase"><%= f %></span>
+                        </label>
+                    <% }) %>
+                </div>
+            </div>
+
+            <div class="bg-white p-10 rounded-[3rem] border border-gray-100 shadow-sm">
+                <h2 class="font-black uppercase text-xs mb-8 flex items-center gap-3">
+                    <span class="w-8 h-8 bg-black text-white rounded-full flex items-center justify-center text-[10px]">03</span>
+                    Payment Details
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="text-[9px] font-black uppercase text-gray-400 ml-2">Roommate's Share (Required)</label>
+                        <input type="number" name="roommate_share" id="js_share" class="w-full p-4 bg-gray-50 rounded-2xl outline-none font-bold text-sm border-2 border-black mt-1" required>
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-black uppercase text-gray-400 ml-2">Payment Duration</label>
+                        <select name="payment_duration" class="w-full p-4 bg-gray-50 rounded-2xl outline-none font-bold text-sm mt-1">
+                            <option>Per Semester</option><option>Per Year</option><option>Monthly</option>
+                        </select>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 md:col-span-2">
+                        <select name="light_bill_split" class="p-4 bg-gray-50 rounded-2xl outline-none font-bold text-sm">
+                            <option disabled selected>Light Bill Split?</option>
+                            <option>Yes</option><option>No</option>
+                        </select>
+                        <input type="text" name="caution_fee" placeholder="Caution Fee (Optional)" class="p-4 bg-gray-50 rounded-2xl outline-none font-bold text-sm">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white p-10 rounded-[3rem] border border-gray-100 shadow-sm">
+                <h2 class="font-black uppercase text-xs mb-8 flex items-center gap-3 text-blue-600">
+                    <span class="w-8 h-8 bg-blue-600 text-white rounded-full flex items-center justify-center text-[10px]">04</span>
+                    About Me (Personality)
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <input type="text" name="my_dept" placeholder="School/Department" class="p-4 bg-gray-50 rounded-2xl outline-none font-bold text-sm">
+                    <select name="my_sleep" class="p-4 bg-gray-50 rounded-2xl outline-none font-bold text-sm">
+                        <option disabled selected>Sleep Schedule</option>
+                        <option>Early sleeper</option><option>Night owl</option>
+                    </select>
+                    <select name="my_neatness" class="p-4 bg-gray-50 rounded-2xl outline-none font-bold text-sm">
+                        <option disabled selected>Cleanliness Level</option>
+                        <option>Very neat</option><option>Moderately neat</option><option>Not too strict</option>
+                    </select>
+                    <select name="my_personality" class="p-4 bg-gray-50 rounded-2xl outline-none font-bold text-sm">
+                        <option disabled selected>Personality</option>
+                        <option>Quiet</option><option>Social</option><option>Reserved</option><option>Friendly</option>
+                    </select>
+                    <div class="flex gap-4">
+                        <select name="my_smoke" class="flex-1 p-4 bg-gray-50 rounded-2xl outline-none font-bold text-sm">
+                            <option disabled selected>Do you smoke?</option>
+                            <option>Yes</option><option>No</option>
+                        </select>
+                        <select name="my_drink" class="flex-1 p-4 bg-gray-50 rounded-2xl outline-none font-bold text-sm">
+                            <option disabled selected>Do you drink?</option>
+                            <option>Yes</option><option>No</option>
+                        </select>
+                    </div>
+                    <input type="text" name="my_hobbies" placeholder="My Hobbies" class="p-4 bg-gray-50 rounded-2xl outline-none font-bold text-sm">
+                </div>
+            </div>
+
+            <div class="bg-black text-white p-10 rounded-[3rem] shadow-2xl">
+                <h2 class="font-black uppercase text-xs mb-8 flex items-center gap-3">
+                    <span class="w-8 h-8 bg-white text-black rounded-full flex items-center justify-center text-[10px]">05</span>
+                    Who I Want
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <select name="pref_gender" id="js_pref_gender" class="p-4 bg-white/10 rounded-2xl outline-none font-bold text-sm text-white">
+                        <option class="text-black">No preference</option>
+                        <option class="text-black">Male</option><option class="text-black">Female</option>
+                    </select>
+                    <input type="text" name="pref_age" placeholder="Preferred Age Range" class="p-4 bg-white/10 rounded-2xl outline-none font-bold text-sm text-white">
+                    <select name="pref_lifestyle" class="p-4 bg-white/10 rounded-2xl outline-none font-bold text-sm text-white">
+                        <option class="text-black">Quiet person</option><option class="text-black">Social person</option>
+                    </select>
+                    <select name="pref_occupation" class="p-4 bg-white/10 rounded-2xl outline-none font-bold text-sm text-white">
+                        <option class="text-black">Student only</option><option class="text-black">Working class allowed</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="bg-orange-50 p-10 rounded-[3rem] border border-orange-100">
+                <h2 class="font-black uppercase text-xs mb-4 text-orange-600 flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 10-2 0v1a1 1 0 102 0V3zM15.657 5.757a1 1 0 00-1.414-1.414l-.707.707a1 1 0 001.414 1.414l.707-.707zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zM5 10a1 1 0 01-1 1H3a1 1 0 110-2h1a1 1 0 011 1zM8 16v-1a1 1 0 112 0v1a1 1 0 11-2 0zM13.536 14.464a1 1 0 01-1.415 1.415l-.707-.708a1 1 0 011.414-1.414l.708.707zM16.535 15.879a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414l-.707.707z"></path></svg>
+                    Smart Assistant Description
+                </h2>
+                <textarea name="description" id="finalDesc" class="w-full h-40 bg-white p-6 rounded-2xl outline-none font-bold text-sm mb-4" placeholder="Generate or write your description..."></textarea>
+                <button type="button" onclick="smartGenerate()" class="bg-orange-600 text-white px-8 py-3 rounded-full font-black text-[10px] uppercase tracking-widest shadow-lg shadow-orange-200">
+                    ✨ Generate Smart Description
+                </button>
+            </div>
+
+            <div class="bg-white p-10 rounded-[3rem] border border-gray-100 shadow-sm">
+                <h2 class="font-black uppercase text-xs mb-8">07. Upload Photos (Bedroom, Kitchen, etc)</h2>
+                <input type="file" name="images" multiple class="w-full p-12 border-2 border-dashed border-gray-100 rounded-[2rem] bg-gray-50 font-bold text-xs">
+            </div>
+
+            <button type="submit" class="w-full bg-black text-white py-10 rounded-[3rem] font-black uppercase tracking-[0.4em] text-sm hover:scale-[1.01] transition-all shadow-2xl">
+                Publish My Ad
+            </button>
+
+        </form>
+    </main>
+
+    <script>
+        function smartGenerate() {
+            const area = document.getElementById('js_area').value || '[Area]';
+            const dist = document.getElementById('js_dist').value || '[Distance]';
+            const share = document.getElementById('js_share').value || '0';
+            const gender = document.getElementById('js_pref_gender').value;
+            const type = document.getElementsByName('apt_type')[0].value;
+
+            const text = `I am offering a clean ${type} located in ${area}, just ${dist} from campus. The house is well-maintained and perfect for a student. The roommate share is ₦${Number(share).toLocaleString()} per year. Looking for a respectful ${gender === 'No preference' ? '' : gender} roommate to join me. Let's make this a home!`;
+            
+            document.getElementById('finalDesc').value = text;
+        }
+    </script>
+</body>
+</html>

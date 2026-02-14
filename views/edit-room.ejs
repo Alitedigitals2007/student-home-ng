@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Room | StudentHome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-gray-50 font-['Plus_Jakarta_Sans'] pb-20">
+
+    <form action="/update-room/<%= room.id %>" method="POST" enctype="multipart/form-data" class="max-w-4xl mx-auto mt-10 space-y-8 px-6">
+        
+        <header class="flex justify-between items-center">
+            <div>
+                <h1 class="text-3xl font-black tracking-tighter uppercase">Edit <span class="text-gray-400">Listing</span></h1>
+                <p class="text-xs font-bold text-gray-400 uppercase tracking-widest">Update your property details</p>
+            </div>
+            <a href="/dashboard" class="text-[10px] font-black uppercase border-b-2 border-black">Cancel</a>
+        </header>
+
+        <section class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="md:col-span-2">
+                    <label class="text-[10px] font-black uppercase text-gray-400">Room Title</label>
+                    <input type="text" name="title" value="<%= room.title %>" class="w-full bg-gray-50 p-4 rounded-2xl mt-1 outline-none border" required>
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400">Area</label>
+                    <input type="text" name="area" value="<%= room.area %>" class="w-full bg-gray-50 p-4 rounded-2xl mt-1 outline-none" required>
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400">Street</label>
+                    <input type="text" name="street" value="<%= room.street %>" class="w-full bg-gray-50 p-4 rounded-2xl mt-1 outline-none" required>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
+            <h2 class="text-xl font-black mb-6">Status & Availability</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400">Currently Available?</label>
+                    <select name="is_available_now" class="w-full bg-gray-50 p-4 rounded-2xl mt-1 outline-none">
+                        <option value="Yes" <%= room.is_available_now ? 'selected' : '' %>>Yes</option>
+                        <option value="No" <%= !room.is_available_now ? 'selected' : '' %>>No</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400">Price (₦)</label>
+                    <input type="number" name="price" value="<%= room.price %>" class="w-full bg-gray-50 p-4 rounded-2xl mt-1 outline-none" required>
+                </div>
+                <div>
+                    <label class="text-[10px] font-black uppercase text-gray-400">Room Type</label>
+                    <select name="room_type" class="w-full bg-gray-50 p-4 rounded-2xl mt-1 outline-none">
+                        <% ['Self contain', 'Shared room', 'Hostel', '1 bedroom flat'].forEach(type => { %>
+                            <option value="<%= type %>" <%= room.room_type === type ? 'selected' : '' %>><%= type %></option>
+                        <% }) %>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
+            <h2 class="text-xl font-black mb-6">Update Amenities</h2>
+            <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <% ['Constant water', 'Electricity', 'WiFi', 'Security', 'Private bathroom', 'Wardrobe'].forEach(item => { %>
+                    <label class="flex items-center gap-3 p-4 bg-gray-50 rounded-2xl cursor-pointer">
+                        <input type="checkbox" name="amenities" value="<%= item %>" 
+                               <%= room.amenities && room.amenities.includes(item) ? 'checked' : '' %> class="accent-black">
+                        <span class="text-[10px] font-bold uppercase"><%= item %></span>
+                    </label>
+                <% }) %>
+            </div>
+        </section>
+
+        <section class="bg-white p-8 rounded-[2.5rem] shadow-sm border border-gray-100">
+            <h2 class="text-xl font-black mb-4">Photos</h2>
+            <p class="text-[10px] text-gray-400 uppercase mb-4">Leave empty to keep existing photos</p>
+            <div class="flex gap-2 mb-4">
+                <% room.image_gallery.forEach(img => { %>
+                    <img src="<%= img %>" class="w-16 h-16 rounded-lg object-cover border">
+                <% }) %>
+            </div>
+            <input type="file" name="images" multiple class="w-full bg-gray-50 p-4 rounded-2xl outline-none">
+        </section>
+
+        <button type="submit" class="w-full bg-black text-white py-8 rounded-[2.5rem] font-black uppercase tracking-widest shadow-2xl hover:bg-gray-900 transition">
+            Save Changes
+        </button>
+
+    </form>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-[#fafafa] flex items-center justify-center min-h-screen font-['Plus_Jakarta_Sans']">
+    <div class="bg-white p-12 rounded-[3rem] shadow-2xl w-full max-w-md border border-gray-50">
+        <h2 class="text-4xl font-black tracking-tighter mb-2">GET STARTED.</h2>
+        <p class="text-gray-400 text-sm mb-10 font-medium uppercase tracking-widest">Join the premium network</p>
+        
+       <form action="/auth/register" method="POST" class="space-y-4">
+    <div>
+        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400">Full Name</label>
+        <input type="text" name="full_name" required class="w-full border-b-2 border-gray-100 py-2 outline-none focus:border-black transition font-semibold" placeholder="Alite Design">
+    </div>
+    <div>
+        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400">Phone Number</label>
+        <input type="tel" name="phone_number" required class="w-full border-b-2 border-gray-100 py-2 outline-none focus:border-black transition font-semibold" placeholder="08012345678">
+    </div>
+    <div>
+        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400">Email</label>
+        <input type="email" name="email" required class="w-full border-b-2 border-gray-100 py-2 outline-none focus:border-black transition font-semibold" placeholder="email@example.com">
+    </div>
+    <div>
+        <label class="text-[10px] font-black uppercase tracking-widest text-gray-400">Password</label>
+        <input type="password" name="password" required class="w-full border-b-2 border-gray-100 py-2 outline-none focus:border-black transition font-semibold" placeholder="••••••••">
+    </div>
+    <button type="submit" class="w-full bg-black text-white py-4 rounded-2xl font-bold shadow-xl mt-4">Create Account</button>
+</form>
+        
+        <p class="mt-8 text-center text-gray-400 text-xs font-bold uppercase tracking-widest">
+            Already a member? <a href="/login" class="text-black underline">Sign In</a>
+        </p>
+    </div>
+</body>
+</html>

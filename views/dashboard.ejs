@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Control Center | StudentHome</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .tab-btn.active { background-color: black; color: white; }
+    </style>
+</head>
+<body class="bg-[#fafafa] text-black antialiased">
+
+    <nav class="flex justify-between items-center px-6 md:px-10 py-6 bg-white border-b border-gray-100 sticky top-0 z-50">
+        <a href="/" class="text-xl font-black tracking-tighter uppercase">Student<span class="text-gray-300">Home</span></a>
+        <div class="flex items-center gap-4">
+            <span class="text-[10px] font-black uppercase tracking-widest text-gray-400 hidden md:block">User: <%= user.full_name %></span>
+            <a href="/logout" class="text-[10px] font-black uppercase tracking-widest bg-red-50 text-red-500 px-4 py-2 rounded-lg">Logout</a>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-6 py-12 md:py-20">
+        <header class="mb-12">
+            <h1 class="text-4xl md:text-6xl font-black tracking-tighter uppercase">Control <span class="text-gray-300">Center</span></h1>
+            <p class="text-xs font-bold text-gray-400 uppercase tracking-[0.3em] mt-2">Manage your property & roommate listings</p>
+        </header>
+
+        <div class="flex gap-4 mb-12 overflow-x-auto pb-2 no-scrollbar">
+            <button onclick="showTab(event, 'rooms')" class="tab-btn active bg-black text-white px-8 py-4 rounded-2xl font-bold text-xs uppercase tracking-widest whitespace-nowrap">My Houses</button>
+            <button onclick="showTab(event, 'roommates')" class="tab-btn bg-white border border-gray-100 px-8 py-4 rounded-2xl font-bold text-xs uppercase tracking-widest whitespace-nowrap text-black">Roommate Ads</button>
+            <button onclick="showTab(event, 'requests')" class="tab-btn bg-white border border-gray-100 px-8 py-4 rounded-2xl font-bold text-xs uppercase tracking-widest whitespace-nowrap text-black">My Requests</button>
+        </div>
+
+        <div id="rooms-tab" class="tab-content space-y-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="font-black uppercase text-sm tracking-widest text-gray-400">Manage Listings</h2>
+                <a href="/post-room" class="bg-black text-white px-6 py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:scale-105 transition">+ List a House</a>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <% if (rooms && rooms.length > 0) { %>
+                    <% rooms.forEach(room => { %>
+                        <div class="bg-white p-6 rounded-[2.5rem] border border-gray-100 flex gap-6 items-center shadow-sm">
+                            <img src="<%= room.image_url || '/uploads/default-room.jpg' %>" class="w-20 h-20 rounded-2xl object-cover bg-gray-100">
+                            <div class="flex-1">
+                                <div class="flex justify-between items-start">
+                                    <h3 class="font-bold text-lg leading-tight"><%= room.title %></h3>
+                                    <form action="/update-status/<%= room.id %>" method="POST">
+                                        <select onchange="this.form.submit()" name="status" class="text-[8px] font-black uppercase px-2 py-1 rounded-full <%= room.status === 'Available' ? 'bg-green-50 text-green-600' : 'bg-orange-50 text-orange-600' %> outline-none cursor-pointer">
+                                            <option value="Available" <%= room.status === 'Available' ? 'selected' : '' %>>Available</option>
+                                            <option value="Occupied" <%= room.status === 'Occupied' ? 'selected' : '' %>>Occupied</option>
+                                        </select>
+                                    </form>
+                                </div>
+                                <div class="flex gap-4 mt-3">
+                                    <a href="/edit-room/<%= room.id %>" class="text-[10px] font-black uppercase tracking-widest text-gray-400 hover:text-black">Edit</a>
+                                    <form action="/delete-room/<%= room.id %>" method="POST" onsubmit="return confirm('Delete this property?')">
+                                        <button class="text-[10px] font-black uppercase tracking-widest text-red-400">Delete</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="col-span-full py-16 text-center bg-white rounded-[2.5rem] border border-dashed border-gray-200">
+                        <p class="text-gray-400 text-xs font-bold uppercase tracking-widest">No properties listed yet.</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <div id="roommates-tab" class="tab-content hidden space-y-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="font-black uppercase text-sm tracking-widest text-gray-400">Roommate Ads Feed</h2>
+                <a href="/post-roommate" class="bg-black text-white px-6 py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:scale-105 transition">+ Post New Ad</a>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6">
+                <% if (roommateAds && roommateAds.length > 0) { %>
+                    <% roommateAds.forEach(ad => { %>
+                        <div class="bg-white p-8 rounded-[3rem] border border-gray-100 shadow-sm flex flex-col md:flex-row gap-8 items-center">
+                            <img src="<%= ad.images && ad.images[0] ? ad.images[0] : '/uploads/default-avatar.jpg' %>" class="w-24 h-24 rounded-[2rem] object-cover bg-gray-50 shadow-md">
+                            
+                            <div class="flex-1">
+                                <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                                    <div>
+                                        <div class="flex items-center gap-3">
+                                            <h3 class="text-xl font-black tracking-tight uppercase">Looking in <%= ad.area %></h3>
+                                            <span class="px-3 py-1 rounded-full text-[8px] font-black uppercase tracking-tighter <%= ad.status === 'Open' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600' %>">
+                                                <%= ad.status %>
+                                            </span>
+                                        </div>
+                                        <p class="text-gray-400 font-bold uppercase text-[10px] tracking-widest mt-1">
+                                            Budget: ₦<%= Number(ad.roommate_share).toLocaleString() %> • <%= ad.apt_type %>
+                                        </p>
+                                    </div>
+
+                                    <div class="flex items-center gap-2">
+                                        <form action="/toggle-roommate-status/<%= ad.id %>" method="POST">
+                                            <button type="submit" class="px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest border border-black <%= ad.status === 'Open' ? 'bg-white text-black' : 'bg-black text-white' %>">
+                                                <%= ad.status === 'Open' ? 'Close Ad' : 'Open Ad' %>
+                                            </button>
+                                        </form>
+                                        <form action="/delete-roommate-ad/<%= ad.id %>" method="POST" onsubmit="return confirm('Delete this roommate ad?')">
+                                            <button type="submit" class="px-4 py-2 rounded-xl text-[9px] font-black uppercase tracking-widest bg-red-50 text-red-500">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="py-16 text-center bg-white rounded-[3rem] border border-dashed border-gray-200">
+                        <p class="text-gray-400 text-xs font-bold uppercase tracking-widest mb-4">No roommate ads found.</p>
+                        <a href="/post-roommate" class="text-black border-b-2 border-black font-black uppercase text-[10px]">Create your first ad</a>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+
+        <div id="requests-tab" class="tab-content hidden space-y-6">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="font-black uppercase text-sm tracking-widest text-gray-400">My Personal Requests</h2>
+                <button onclick="toggleForm('requestForm')" class="bg-black text-white px-6 py-3 rounded-xl text-[10px] font-bold uppercase tracking-widest hover:scale-105 transition">+ New Request</button>
+            </div>
+
+            <form id="requestForm" action="/post-request" method="POST" class="hidden bg-white p-8 rounded-[2.5rem] border border-gray-100 mb-10 shadow-lg">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label class="text-[9px] font-black uppercase text-gray-400 block mb-1">Max Budget (₦)</label>
+                        <input type="number" name="budget" placeholder="e.g. 250000" class="w-full bg-gray-50 p-4 rounded-2xl outline-none font-bold text-sm border focus:border-black" required>
+                    </div>
+                    <div>
+                        <label class="text-[9px] font-black uppercase text-gray-400 block mb-1">Location Preference</label>
+                        <input type="text" name="location" placeholder="e.g. Odim Gate" class="w-full bg-gray-50 p-4 rounded-2xl outline-none font-bold text-sm border focus:border-black" required>
+                    </div>
+                </div>
+                <label class="text-[9px] font-black uppercase text-gray-400 block mb-1">Detailed Description</label>
+                <textarea name="description" placeholder="What kind of room are you looking for?" class="w-full bg-gray-50 p-4 rounded-2xl outline-none font-bold text-sm h-32 mb-6 border focus:border-black" required></textarea>
+                <button type="submit" class="w-full bg-black text-white py-4 rounded-2xl font-black uppercase tracking-widest">Submit Housing Request</button>
+            </form>
+
+            <div class="space-y-4">
+                <% if (requests && requests.length > 0) { %>
+                    <% requests.forEach(req => { %>
+                        <div class="bg-white p-8 rounded-[2rem] border border-gray-100 flex justify-between items-center shadow-sm">
+                            <div>
+                                <p class="font-black text-xl tracking-tighter uppercase">₦<%= Number(req.budget).toLocaleString() %> <span class="text-gray-300">in</span> <%= req.preferred_location %></p>
+                                <p class="text-gray-400 text-sm mt-1 font-medium"><%= req.description %></p>
+                            </div>
+                            <form action="/delete-request/<%= req.id %>" method="POST" onsubmit="return confirm('Delete this request?')">
+                                <button class="text-[10px] font-black uppercase tracking-widest text-red-400 hover:underline">Remove</button>
+                            </form>
+                        </div>
+                    <% }) %>
+                <% } else { %>
+                    <div class="py-16 text-center bg-white rounded-[2.5rem] border border-dashed border-gray-200">
+                        <p class="text-gray-400 text-xs font-bold uppercase tracking-widest">You have no active requests.</p>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Tab Switching Logic
+        function showTab(event, tabName) {
+            // Hide all contents
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            
+            // Reset all buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-black', 'text-white', 'active');
+                btn.classList.add('bg-white', 'text-black', 'border-gray-100');
+            });
+
+            // Show current tab
+            document.getElementById(tabName + '-tab').classList.remove('hidden');
+            
+            // Style active button
+            event.currentTarget.classList.add('bg-black', 'text-white', 'active');
+            event.currentTarget.classList.remove('bg-white', 'text-black', 'border-gray-100');
+        }
+
+        // Form Toggle Logic
+        function toggleForm(id) {
+            const form = document.getElementById(id);
+            form.classList.toggle('hidden');
+            form.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

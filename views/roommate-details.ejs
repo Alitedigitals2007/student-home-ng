@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= ad.full_name %> | Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f0f0f0; }
+        .neo-brutal { border: 3px solid #000; box-shadow: 8px 8px 0px #000; }
+        .neo-brutal-hover:hover { transform: translate(-2px, -2px); box-shadow: 12px 12px 0px #000; transition: all 0.2s ease; }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <header class="max-w-6xl mx-auto mb-12 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+        <div>
+            <a href="/roommates" class="inline-block bg-white neo-brutal px-4 py-2 text-[10px] font-black uppercase tracking-widest mb-4 hover:bg-yellow-400 transition">← Back</a>
+            <h1 class="text-5xl md:text-7xl font-black uppercase tracking-tighter leading-none italic">
+                <%= ad.full_name %>
+            </h1>
+        </div>
+        <div class="bg-blue-600 neo-brutal p-6 text-white rotate-2">
+            <p class="text-[10px] font-black uppercase tracking-widest text-blue-200 leading-none mb-2 italic">Student Share</p>
+            <p class="text-4xl font-black italic">₦<%= Number(ad.roommate_share).toLocaleString() %></p>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10">
+        
+        <div class="lg:col-span-7 space-y-6">
+            <div class="bg-white neo-brutal h-[500px] overflow-hidden relative">
+                <% if (ad.images && ad.images[0]) { %>
+                    <img src="<%= ad.images[0] %>" class="w-full h-full object-cover">
+                <% } else { %>
+                    <div class="w-full h-full flex items-center justify-center bg-gray-100 font-black text-xs uppercase italic">No Photos</div>
+                <% } %>
+                <div class="absolute bottom-6 left-6 bg-white neo-brutal px-6 py-2">
+                    <p class="text-[10px] font-black uppercase italic tracking-widest"><%= ad.apt_type %></p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-6">
+                <div class="bg-white neo-brutal p-8">
+                    <h3 class="text-[10px] font-black uppercase tracking-widest text-gray-400 mb-6 italic">// Bio</h3>
+                    <p class="text-lg font-bold leading-tight italic">"<%= ad.description %>"</p>
+                </div>
+                <div class="bg-yellow-400 neo-brutal p-8">
+                    <h3 class="text-[10px] font-black uppercase tracking-widest mb-6 italic text-black/50">// Location</h3>
+                    <p class="text-xl font-black uppercase"><%= ad.area %></p>
+                    <p class="text-[10px] font-bold text-black/60 uppercase mt-2 tracking-tighter"><%= ad.landmark %></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="lg:col-span-5 space-y-8">
+            
+            <div class="bg-white neo-brutal p-8 -rotate-1">
+                <h3 class="text-[10px] font-black uppercase tracking-[0.2em] mb-8 bg-black text-white inline-block px-3 py-1 italic italic">Occupant Habits</h3>
+                <div class="grid grid-cols-1 gap-4">
+                    <div class="flex justify-between items-center bg-gray-50 p-3 neo-brutal">
+                        <span class="text-[9px] font-black uppercase text-gray-400 italic">Personality</span>
+                        <span class="text-xs font-black uppercase"><%= ad.my_personality %></span>
+                    </div>
+                    <div class="flex justify-between items-center bg-gray-50 p-3 neo-brutal">
+                        <span class="text-[9px] font-black uppercase text-gray-400 italic">Sleep Cycle</span>
+                        <span class="text-xs font-black uppercase"><%= ad.my_sleep %></span>
+                    </div>
+                    <div class="flex justify-between items-center bg-gray-50 p-3 neo-brutal">
+                        <span class="text-[9px] font-black uppercase text-gray-400 italic">Cleanliness</span>
+                        <span class="text-xs font-black uppercase"><%= ad.my_neatness %></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-green-400 neo-brutal p-8 rotate-1">
+                <h3 class="text-[10px] font-black uppercase tracking-[0.2em] mb-6 text-black/50 italic">Facilities Included</h3>
+                <div class="flex flex-wrap gap-2">
+                    <% ad.facilities.forEach(f => { %>
+                        <span class="bg-white neo-brutal px-3 py-1 text-[9px] font-black uppercase"><%= f %></span>
+                    <% }) %>
+                </div>
+            </div>
+
+            <div class="bg-white neo-brutal p-8">
+                <h3 class="text-[10px] font-black uppercase tracking-[0.2em] mb-6 text-gray-400 italic">The Target Roommate</h3>
+                <p class="text-sm font-bold uppercase italic leading-relaxed">
+                    Looking for a <span class="bg-blue-100 px-1"><%= ad.pref_gender %></span> who is <span class="bg-blue-100 px-1"><%= ad.pref_lifestyle %></span> and works as a <span class="bg-blue-100 px-1"><%= ad.pref_occupation %></span>.
+                </p>
+            </div>
+
+            <div class="space-y-4">
+                <a href="https://wa.me/<%= ad.phone_number %>" class="block w-full bg-[#25D366] text-white text-center py-6 neo-brutal neo-brutal-hover font-black uppercase text-[11px] tracking-[0.3em]">
+                    WhatsApp Chat
+                </a>
+                <a href="tel:<%= ad.phone_number %>" class="block w-full bg-white text-black text-center py-6 neo-brutal neo-brutal-hover font-black uppercase text-[11px] tracking-[0.3em]">
+                    Direct Call
+                </a>
+            </div>
+
+        </div>
+    </main>
+
+    <footer class="mt-20 text-center py-10">
+        <p class="text-[10px] font-black uppercase tracking-[0.5em] text-gray-300">Verified Listing ID: #<%= ad.id %>9902</p>
+    </footer>
+
+</body>
+</html>
