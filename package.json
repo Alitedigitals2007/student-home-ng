@@ -1,17 +1,22 @@
 {
-  "name": "room-project",
+  "name": "student-home-ng",
   "version": "1.0.0",
-  "description": "",
+  "description": "Student housing and roommate matching platform",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js"
   },
   "dependencies": {
-    "bcryptjs": "^3.0.3",
+    "bcryptjs": "^2.4.3",
+    "connect-pg-simple": "^9.0.1",
     "dotenv": "^16.4.7",
     "ejs": "^3.1.10",
     "express": "^4.21.2",
+    "express-session": "^1.18.1",
+    "multer": "^1.4.5-lts.1",
     "pg": "^8.13.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
